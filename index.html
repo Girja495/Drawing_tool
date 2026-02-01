@@ -2,86 +2,147 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Student Registration</title>
+<title>Product Filter</title>
 
 <style>
-body{
-    font-family: Arial, sans-serif;
-    background:#f4f1f1;
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+    body{
+        margin:0;
+        font-family:'Segoe UI',sans-serif;
+        background:linear-gradient(135deg,#667eea,#764ba2);
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
 
-.container{
-    width:400px;
-}
+    .container{
+        background:#fff;
+        width:900px;
+        padding:25px;
+        border-radius:15px;
+        box-shadow:0 15px 40px rgba(0,0,0,0.2);
+    }
 
-h1{
-    font-size:40px;
-    margin-bottom:20px;
-}
+    h2{
+        text-align:center;
+        margin-bottom:20px;
+        color:#333;
+    }
 
-label{
-    font-size:22px;
-    display:block;
-    margin-top:20px;
-}
+    .controls{
+        display:flex;
+        justify-content:center;
+        margin-bottom:25px;
+    }
 
-input{
-    width:100%;
-    padding:12px;
-    font-size:18px;
-    border:3px solid #4058c4;
-    border-radius:6px;
-    outline:none;
-}
+    select{
+        padding:10px 15px;
+        font-size:16px;
+        border-radius:8px;
+        border:1px solid #ccc;
+        outline:none;
+        cursor:pointer;
+        transition:0.3s;
+    }
 
-input:valid{
-    border-color:#086a10;
-}
+    select:hover{
+        border-color:#764ba2;
+    }
 
-.error{
-    color:#1613d0;
-    font-size:20px;
-    margin-top:5px;
-}
+    .products{
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+        gap:20px;
+    }
 
-button{
-    margin-top:20px;
-    padding:10px 20px;
-    font-size:20px;
-    background:rgb(5, 168, 35);
-    color:rgb(255, 255, 255);
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    float:right;
-}
+    .product{
+        background:#f9f9f9;
+        border-radius:12px;
+        padding:20px;
+        text-align:center;
+        transition:0.3s;
+        cursor:pointer;
+    }
+
+    .product:hover{
+        transform:translateY(-6px);
+        box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .product h3{
+        margin:10px 0;
+        color:#333;
+    }
+
+    .price{
+        color:#764ba2;
+        font-weight:bold;
+        font-size:18px;
+    }
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h1>Student Registration</h1>
-<form>
+    <h2>🛍️ Product Store</h2>
 
+    <div class="controls">
+        <select id="sort">
+            <option value="default">Sort Products</option>
+            <option value="priceLow">Price: Low → High</option>
+            <option value="priceHigh">Price: High → Low</option>
+            <option value="name">Name: A → Z</option>
+        </select>
+    </div>
 
-    <label>Full Name:</label>
-    <input type="text" required pattern="[A-Za-z\s]{6,50}">
+    <div class="products" id="products">
+        <div class="product" data-price="300" data-name="Shoes">
+            👟
+            <h3>Shoes</h3>
+            <p class="price">₹300</p>
+        </div>
 
-    <label>Email:</label>
-    <input type="email" required>
-    
-    <label>Age:</label>
-    <input type="number" required min="16" max="30">
-    
-    <button>Register</button>
-</form>
+        <div class="product" data-price="150" data-name="Cap">
+            🧢
+            <h3>Cap</h3>
+            <p class="price">₹150</p>
+        </div>
+
+        <div class="product" data-price="500" data-name="Jacket">
+            🧥
+            <h3>Jacket</h3>
+            <p class="price">₹500</p>
+        </div>
+
+        <div class="product" data-price="250" data-name="Tshirt">
+            👕
+            <h3>T-Shirt</h3>
+            <p class="price">₹250</p>
+        </div>
+    </div>
 </div>
+
+<script>
+    const sort=document.getElementById("sort");
+    const products=document.getElementById("products");
+
+    sort.addEventListener("change",()=>{
+        const items=[...products.children];
+
+        if(sort.value==="priceLow"){
+            items.sort((a,b)=>a.dataset.price-b.dataset.price);
+        }
+        else if(sort.value==="priceHigh"){
+            items.sort((a,b)=>b.dataset.price-a.dataset.price);
+        }
+        else if(sort.value==="name"){
+            items.sort((a,b)=>a.dataset.name.localeCompare(b.dataset.name));
+        }
+
+        items.forEach(item=>products.appendChild(item));
+    });
+</script>
 
 </body>
 </html>
